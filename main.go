@@ -1,11 +1,10 @@
-# go_lru/v1
-
-This provides the `LRU(Least recently used)` package which implements a fixed-size
-thread safe LRU cache.
-
-## Example
-```go
 package main
+
+/*
+   @Time: 2023/10/15 19:41
+   @Author: david
+   @File: main
+*/
 
 import (
 	"github.com/orbit-w/go_lru/v1/lru"
@@ -20,5 +19,3 @@ func main() {
 		ins.Set(i, 0)
 	}
 }
-
-```
