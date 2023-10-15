@@ -1,4 +1,4 @@
-package lru_list
+package linkedlist
 
 /*
    @Time: 2023/10/14 18:23

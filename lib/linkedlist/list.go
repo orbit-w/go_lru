@@ -1,4 +1,4 @@
-package lru_list
+package linkedlist
 
 /*
    @Time: 2023/10/14 18:23
@@ -6,28 +6,29 @@ package lru_list
    @File: list
 */
 
-type LruList[K comparable, V any] struct {
+//LinkedList doubly linked list
+type LinkedList[K comparable, V any] struct {
 	root Entry[K, V]
 	len  int
 }
 
-func New[K comparable, V any]() *LruList[K, V] {
-	list := new(LruList[K, V])
+func New[K comparable, V any]() *LinkedList[K, V] {
+	list := new(LinkedList[K, V])
 	list.Init()
 	return list
 }
 
-func (ins *LruList[K, V]) Init() {
+func (ins *LinkedList[K, V]) Init() {
 	ins.root.root = true
 	ins.root.prev = &ins.root
 	ins.root.next = &ins.root
 }
 
-func (ins *LruList[K, V]) Len() int {
+func (ins *LinkedList[K, V]) Len() int {
 	return ins.len
 }
 
-func (ins *LruList[K, V]) LPush(k K, v V) *Entry[K, V] {
+func (ins *LinkedList[K, V]) LPush(k K, v V) *Entry[K, V] {
 	ent := &Entry[K, V]{
 		Key:   k,
 		Value: v,
@@ -36,7 +37,7 @@ func (ins *LruList[K, V]) LPush(k K, v V) *Entry[K, V] {
 	return ent
 }
 
-func (ins *LruList[K, V]) LPop() *Entry[K, V] {
+func (ins *LinkedList[K, V]) LPop() *Entry[K, V] {
 	if ins.isEmpty() {
 		return nil
 	}
@@ -45,12 +46,12 @@ func (ins *LruList[K, V]) LPop() *Entry[K, V] {
 	return ent
 }
 
-func (ins *LruList[K, V]) Remove(ent *Entry[K, V]) V {
+func (ins *LinkedList[K, V]) Remove(ent *Entry[K, V]) V {
 	ins.remove(ent)
 	return ent.Value
 }
 
-func (ins *LruList[K, V]) LMove(ent *Entry[K, V]) {
+func (ins *LinkedList[K, V]) LMove(ent *Entry[K, V]) {
 	if ins.root.next == ent {
 		return
 	}
@@ -59,7 +60,7 @@ func (ins *LruList[K, V]) LMove(ent *Entry[K, V]) {
 }
 
 // RPop returns the last element of list l or nil if the list is empty.
-func (ins *LruList[K, V]) RPop() *Entry[K, V] {
+func (ins *LinkedList[K, V]) RPop() *Entry[K, V] {
 	if ins.isEmpty() {
 		return nil
 	}
@@ -68,14 +69,14 @@ func (ins *LruList[K, V]) RPop() *Entry[K, V] {
 	return ent
 }
 
-func (ins *LruList[K, V]) RRange(num int, iter func(k K, v V)) {
+func (ins *LinkedList[K, V]) RRange(num int, iter func(k K, v V)) {
 	var i int
 	for b := ins.root.prev; b != nil && i < num; b = b.Prev() {
 		iter(b.Key, b.Value)
 	}
 }
 
-func (ins *LruList[K, V]) insert(ent, at *Entry[K, V]) {
+func (ins *LinkedList[K, V]) insert(ent, at *Entry[K, V]) {
 	ent.prev = at
 	ent.next = at.next
 	ent.prev.next = ent
@@ -83,7 +84,7 @@ func (ins *LruList[K, V]) insert(ent, at *Entry[K, V]) {
 	ins.len++
 }
 
-func (ins *LruList[K, V]) move(ent, at *Entry[K, V]) {
+func (ins *LinkedList[K, V]) move(ent, at *Entry[K, V]) {
 	if ent == at {
 		return
 	}
@@ -97,7 +98,7 @@ func (ins *LruList[K, V]) move(ent, at *Entry[K, V]) {
 	ent.next.prev = ent
 }
 
-func (ins *LruList[K, V]) remove(ent *Entry[K, V]) {
+func (ins *LinkedList[K, V]) remove(ent *Entry[K, V]) {
 	ent.prev.next = ent.next
 	ent.next.prev = ent.prev
 
@@ -105,6 +106,6 @@ func (ins *LruList[K, V]) remove(ent *Entry[K, V]) {
 	ins.len--
 }
 
-func (ins *LruList[K, V]) isEmpty() bool {
+func (ins *LinkedList[K, V]) isEmpty() bool {
 	return ins.len == 0
 }

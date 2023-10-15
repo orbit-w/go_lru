@@ -1,4 +1,4 @@
-package lru_list
+package linkedlist
 
 import (
 	"strconv"

@@ -1,8 +1,9 @@
-package app
+package lru
 
 import (
 	"errors"
-	"gocache/app/lru_list"
+	"fmt"
+	"github.com/orbit-w/go_lru/v1/lib/linkedlist"
 )
 
 /*
@@ -15,8 +16,8 @@ import (
 // non-thread safe
 type LRU[K comparable, V any] struct {
 	size     int
-	list     *lru_list.LruList[K, V]
-	itemsMap map[K]*lru_list.Entry[K, V]
+	list     *linkedlist.LinkedList[K, V]
+	itemsMap map[K]*linkedlist.Entry[K, V]
 }
 
 func NewLRU[K comparable, V any](size int) (*LRU[K, V], error) {
@@ -26,14 +27,14 @@ func NewLRU[K comparable, V any](size int) (*LRU[K, V], error) {
 
 	ins := &LRU[K, V]{
 		size:     size,
-		list:     lru_list.New[K, V](),
-		itemsMap: make(map[K]*lru_list.Entry[K, V]),
+		list:     linkedlist.New[K, V](),
+		itemsMap: make(map[K]*linkedlist.Entry[K, V]),
 	}
 	return ins, nil
 }
 
 func (ins *LRU[K, V]) Get(key K) (value V, ok bool) {
-	var ent *lru_list.Entry[K, V]
+	var ent *linkedlist.Entry[K, V]
 	if ent, ok = ins.itemsMap[key]; ok {
 		ins.list.LMove(ent)
 		return ent.Value, true
@@ -65,6 +66,7 @@ func (ins *LRU[K, V]) Remove(key K) (present bool) {
 }
 
 func (ins *LRU[K, V]) remLeast() {
+	fmt.Println("1111")
 	if ent := ins.list.RPop(); ent != nil {
 		delete(ins.itemsMap, ent.Key)
 	}
