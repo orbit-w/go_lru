@@ -16,12 +16,13 @@ import (
 func BenchmarkLRU_Set(b *testing.B) {
 	lru, err := NewLRU[string, int8](10000)
 	assert.NoError(b, err)
-	pool := NewPool(10000)
+	size := int32(10000)
+	pool := NewPool(int(size))
 	b.Run("Set", func(b *testing.B) {
 		b.ReportAllocs()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			uuid := pool[rand.Int31n(10000)]
+			uuid := pool[rand.Int31n(size)]
 			lru.Set(uuid, 0)
 		}
 	})

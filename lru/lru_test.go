@@ -19,7 +19,7 @@ func NewPool(size int) []string {
 	start := 1679510
 	pool := make([]string, size)
 	for i := 0; i < size; i++ {
-		uuid := strconv.FormatInt(int64(start+i), 10)
+		uuid := strconv.Itoa(start + i)
 		pool[i] = uuid
 	}
 	return pool
