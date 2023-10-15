@@ -22,7 +22,7 @@ func UsedNano(start, count int64) string {
 func PrintMem() {
 	var m runtime.MemStats
 	runtime.ReadMemStats(&m)
-	println(fmt.Sprintf("TotalAlloc = %v MiB, HeapAlloc = %v MiB, NumGC = %v, HeapObjs = %v, Goroutine = %v",
+	println(fmt.Sprintf("Sys = %v MiB, TotalAlloc = %v MiB, HeapAlloc = %v MiB, NumGC = %v, HeapObjs = %v, Goroutine = %v", bToMb(m.Sys),
 		bToMb(m.TotalAlloc), bToMb(m.HeapAlloc), m.NumGC, m.HeapObjects, runtime.NumGoroutine()))
 }
 
