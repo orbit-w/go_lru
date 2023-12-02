@@ -2,7 +2,6 @@ package lru
 
 import (
 	"errors"
-	"fmt"
 	"github.com/orbit-w/go_lru/v1/lib/linkedlist"
 )
 
@@ -66,7 +65,6 @@ func (ins *LRU[K, V]) Remove(key K) (present bool) {
 }
 
 func (ins *LRU[K, V]) remLeast() {
-	fmt.Println("1111")
 	if ent := ins.list.RPop(); ent != nil {
 		delete(ins.itemsMap, ent.Key)
 	}
